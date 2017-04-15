@@ -43,42 +43,42 @@ def generator_train(samples, batch_size=16):
                     angle -= 0.20
                     
                 if(randint(0,1) == 1):
-                    gamma = 0.4 + random() * 1.2
-                    invGamma = 1.0 / gamma
-                    table = np.array([((i / 255.0) ** invGamma) * 255 for i in np.arange(0, 256)]).astype("uint8")
+                    gammavalue = 0.5 + random() * 1.0
+                    invertedGamma = 1.0 / gammavalue
+                    table = np.array([((i / 255.0) ** invertedGamma) * 255 for i in np.arange(0, 256)]).astype("uint8")
                     image = cv2.LUT(image, table)
                     
                 if(randint(0,1) == 1):
-                    brightness_change = 0.4 + random()*1.2
+                    brightness_random = 0.5 + random()*1.0
                     image = np.array(image)
                     image = cv2.cvtColor(image,cv2.COLOR_RGB2HSV)
-                    image[:,:,2] = image[:,:,2]*brightness_change
+                    image[:,:,2] = image[:,:,2]*brightness_random
                     image = cv2.cvtColor(image,cv2.COLOR_HSV2RGB)
                     
                 if(randint(0,1) == 1):
-                    saturation_change = 0.4 + 1.2*random()
+                    saturation_random = 0.5 + 1.0*random()
                     image = np.array(image)
                     image = cv2.cvtColor(image,cv2.COLOR_RGB2HSV)
-                    image[:,:,1] = image[:,:,1]*saturation_change
+                    image[:,:,1] = image[:,:,1]*saturation_random
                     image = cv2.cvtColor(image,cv2.COLOR_HSV2RGB)
                 
                 if(randint(0,1) == 1):
-                    lightness_change = 0.4 + 1.2*random()
+                    lightness_random = 0.5 + 1.0*random()
                     image = np.array(image)
                     image = cv2.cvtColor(image,cv2.COLOR_RGB2HLS)
-                    image[:,:,1] = image[:,:,1]*lightness_change
+                    image[:,:,1] = image[:,:,1]*lightness_random
                     image = cv2.cvtColor(image,cv2.COLOR_HLS2RGB)
                     
                 if(randint(0,1) == 1):    
                     image = np.array(image)
-                    rows,cols,rgb = image.shape
-                    steer = -0.5
-                    rand_for_x = random()
-                    translate_y = -5 + random()*10
-                    translate_x = -30 + rand_for_x*60
-                    M = np.float32([[1,0,translate_x],[0,1,translate_y]])
-                    image = cv2.warpAffine(image,M,(cols,rows))
-                    angle = (steer+(rand_for_x-0.5)*0.2)
+                    image_rows,image_cols,image_rgb = image.shape
+                    steer_angle = -0.5
+                    random_for_x = random()
+                    translate_y_random = -5 + random()*10
+                    translate_x_random = -30 + random_for_x*60
+                    temp_M = np.float32([[1,0,translate_x_random],[0,1,translate_y_random]])
+                    image = cv2.warpAffine(image,temp_M,(image_cols,image_rows))
+                    angle = (steer_angle+(random_for_x-0.5)*0.2)
                  
                 if(randint(0,1) == 1): 
                     angle = -angle
@@ -90,30 +90,27 @@ def generator_train(samples, batch_size=16):
                     max_x = 160
                     max_y = 320
                     if(randint(0,1) == 0):
-                        i_1 = (0,0)
-                        i_2 = (0,max_y)
-                        i_3 = (random()*max_x,max_y)
-                        i_4 = (random()*max_x,0)
+                        index1 = (0,0)
+                        index2 = (0,max_y)
+                        index3 = (random()*max_x,max_y)
+                        index4 = (random()*max_x,0)
                     else:
-                        i_1 = (random()*max_x,0)
-                        i_2 = (random()*max_x,max_y)
-                        i_3 = (max_x,max_y)
-                        i_4 = (max_x,0)
+                        index1 = (random()*max_x,0)
+                        index2 = (random()*max_x,max_y)
+                        index3 = (max_x,max_y)
+                        index4 = (max_x,0)
 
-                    vertices = np.array([[i_1,i_2,i_3,i_4]], dtype = np.int32)         
-                    random_brightness = 0.4 + random()*1.2
-                    mask = np.zeros_like(image)
-                    ignore_mask_color = [0,0,255]
-                    cv2.fillPoly(mask, vertices, ignore_mask_color)
-                    indices = mask[:,:,2] == 255
-                    image[:,:,2][indices] = image[:,:,2][indices]*random_brightness
+                    random_vertices = np.array([[index1,index2,index3,index4]], dtype = np.int32)         
+                    random_brightness = 0.5 + random()*1.0
+                    image_mask = np.zeros_like(image)
+                    ignore_mask = [0,0,255]
+                    cv2.fillPoly(image_mask, random_vertices, ignore_mask)
+                    indices255 = image_mask[:,:,2] == 255
+                    image[:,:,2][indices255] = image[:,:,2][indices255]*random_brightness
                     image = cv2.cvtColor(image,cv2.COLOR_HSV2RGB)
 
                 images.append(image)
                 angles.append(angle)
-
-
-
 
             X_train = np.array(images)
             y_train = np.array(angles)
