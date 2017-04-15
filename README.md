@@ -75,7 +75,7 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 ####4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road. For track 1, the most challenging part was to pass through the bridge.
 
 For details about how I created the training data, see the next section. 
 
@@ -83,9 +83,11 @@ For details about how I created the training data, see the next section.
 
 ####1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+The overall strategy for deriving a model architecture was first to use AlexNet-like architecture, and then improve it by adding more layers, trying different filter sizes, different number of fully-connected layers, making deeper convolutions and so on.
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+My first step was to use a convolution neural network model similar to the AlexNet. I thought this model might be appropriate because it worked really well for image classification.
+
+Next, I've tried to use VGG-like architecture, which appeared to be more powerfull.
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
