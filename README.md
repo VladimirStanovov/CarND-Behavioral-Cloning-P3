@@ -102,12 +102,15 @@ At first, I used the dataset provided in the project resources. The final step w
 This helped to avoid falling off the track, however, I encoutered another problem - after adding new data, the model stopped behaving well on the bridge, i.e. it bounced from one side to another many times, being unable to hit the road at the end of the bridge. The recovery data I have collected looked as following:
 
 ![alt text][image5]
+
 ![alt text][image6]
+
 ![alt text][image7]
 
 Then I had to collect even more data only on the bridge, and this finally solved all problems. The model I got is now capable of driving both directions on the track, as I used random flipping of images and angles. Flipping appeared to be very important, as without it the model was able to perform well only left turns, because track 1 mainly has left turns. The flipped images looked like this:
 
 ![alt text][image3]
+
 ![alt text][image4]
 
 Exept the image flipping, I used data from left and right cameras, with the angle changed by +-0.25. From my experiments, 0.25 is a little bit better value than recommended 0.2, as it adds more penalty for hitting the edge of the road. I have also added random shadows on the left or right sides of the image, i.e. the part of the image was made darker, so that the network would learn to rely only on half of the image to determine the steering angle (lines 61-69 in model_track1.py)
