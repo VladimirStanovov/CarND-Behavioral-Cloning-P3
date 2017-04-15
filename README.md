@@ -16,13 +16,11 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image3]: ./examples/center_2016_12_01_13_35_06_915.jpg "Normal Image"
+[image4]: ./examples/center_2016_12_01_13_35_06_915_flipped.jpg "Flipped Image"
+[image5]: ./examples/center_2017_04_03_23_01_23_592.jpg "Recovery Image"
+[image6]: ./examples/center_2017_04_03_23_01_23_828.jpg "Recovery Image"
+[image7]: ./examples/center_2017_04_03_23_01_24_052.jpg "Recovery Image"
 
 ---
 ###Files Submitted & Code Quality
@@ -101,18 +99,16 @@ I ended up with 32-48-64-96 depth and a maxpooling after each layer. As for full
 
 At first, I used the dataset provided in the project resources. The final step was to run the simulator to see how well the car was driving around track one. However, it appeared that although I was able to achieve high accuracy, the model falls off the track at places where the yellow lines dissapear. Then I had to collect more data, and add it to what was provided in the project resources.
 
-![alt text][image2]
-
 This helped to avoid falling off the track, however, I encoutered another problem - after adding new data, the model stopped behaving well on the bridge, i.e. it bounced from one side to another many times, being unable to hit the road at the end of the bridge. The recovery data I have collected looked as following:
 
-![alt text][image3]
-![alt text][image4]
 ![alt text][image5]
+![alt text][image6]
+![alt text][image7]
 
 Then I had to collect even more data only on the bridge, and this finally solved all problems. The model I got is now capable of driving both directions on the track, as I used random flipping of images and angles. Flipping appeared to be very important, as without it the model was able to perform well only left turns, because track 1 mainly has left turns. The flipped images looked like this:
 
-![alt text][image6]
-![alt text][image7]
+![alt text][image3]
+![alt text][image4]
 
 Exept the image flipping, I used data from left and right cameras, with the angle changed by +-0.25. From my experiments, 0.25 is a little bit better value than recommended 0.2, as it adds more penalty for hitting the edge of the road. I have also added random shadows on the left or right sides of the image, i.e. the part of the image was made darker, so that the network would learn to rely only on half of the image to determine the steering angle (lines 61-69 in model_track1.py)
 
@@ -131,8 +127,5 @@ You may check my succeful compliting track 2 on youtube:
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/nhPaGT6zm9o/0.jpg)](https://youtu.be/nhPaGT6zm9o)
 
 I have also included my jupyter notebook file where I tested data augmentation, you may check it out to see how it performs.
-
-
-
 
 
