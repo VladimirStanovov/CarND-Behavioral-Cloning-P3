@@ -112,7 +112,7 @@ Then I had to collect even more data only on the bridge, and this finally solved
 
 Exept the image flipping, I used data from left and right cameras, with the angle changed by +-0.25. From my experiments, 0.25 is a little bit better value than recommended 0.2, as it adds more penalty for hitting the edge of the road. I have also added random shadows on the left or right sides of the image, i.e. the part of the image was made darker, so that the network would learn to rely only on half of the image to determine the steering angle (lines 61-69 in model_track1.py)
 
-You may check my succeful compliting track 1 on youtube:
+You may check my succeful compliting track 1 on youtube (image is clickable):
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/a8uZswck93k/0.jpg)](https://youtu.be/a8uZswck93k)
 
 ####4. Track 2
@@ -123,7 +123,7 @@ This fact made me change the data augmentaton procedure. I've searched through t
 
 However, two really hard turns, left and then right, were still impossible to pass. So, I had to collect even more data, but this time this was only recovery data. I made several iterations, collecting images only from these hard turns, by 3000-6000 instances each time, but only when I have collected a total of 17000 additional recovery instances, I was able to finally pass through the track 2. However, the recovery data ruined the capability of the model to stay in the same lane, so my model sometimes switches it, but this is due to the fact that I didn't pay much attention to the dashed line in recovery data.
 
-You may check my succeful compliting track 2 on youtube:
+You may check my succeful compliting track 2 on youtube (image is clickable):
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/nhPaGT6zm9o/0.jpg)](https://youtu.be/nhPaGT6zm9o)
 
 I have also included my jupyter notebook file where I tested data augmentation, you may check it out to see how it performs.
