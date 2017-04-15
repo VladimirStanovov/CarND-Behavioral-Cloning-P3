@@ -67,11 +67,9 @@ The model does not contain any dropout layers, because introducing them did not 
 
 The model was trained and validated on different data sets to ensure that the model was not overfitting using a generator (code line 240). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
-From my point of view, the overfitting is not a big issue for this problem, because basically underfitting is what I have expirienced more (especially for track 2). However, overfitting may occur, if the model is trained too long, 400+ epochs.
-
 ####3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 239).
+The model used an adam optimizer, so the learning rate was not tuned manually (model_track1.py line 239).
 
 ####4. Appropriate training data
 
@@ -83,54 +81,42 @@ For details about how I created the training data, see the next section.
 
 ####1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was first to use AlexNet-like architecture, and then improve it by adding more layers, trying different filter sizes, different number of fully-connected layers, making deeper convolutions and so on.
+The overall strategy for deriving a model architecture was first to use simple architecture, and then improve it by adding more layers, trying different filter sizes, different number of fully-connected layers, making deeper convolutions and so on.
 
-My first step was to use a convolution neural network model similar to the AlexNet. I thought this model might be appropriate because it worked really well for image classification.
+My first step was to use a convolution neural network model which has several convolution layers, followed by several fully connected layers. I thought this model might be appropriate because it worked really well for image classification.
 
-Next, I've tried to use VGG-like architecture, which appeared to be more powerfull.
+In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model, having only 2 convolutions and 2 fully-connected layers can barely drive the car straight. Moreover, it overfits quite soon, i.e. the difference between training and validation accuracy is quite large.
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
+This brought me to an idea that I should use more complicated models, so I added more layers. I had to perform a lot of experiments, trying different layers depth.
 
-To combat the overfitting, I modified the model so that ...
+I finally randomly shuffled the data set and put 10-20% of the data into a validation set. 
 
-Then I ... 
-
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+I used the training data for training the model. The validation set helped determine if the model was over or under fitting.  I used an adam optimizer so that manually training the learning rate wasn't necessary.
 
 ####2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
-
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
-
-![alt text][image1]
+I ended up with 32-48-64-96 depth and a maxpooling after each layer. As for fully connected layers, the main concept that I found useful is to set several fully connected layers, each following having smaller size (1536-128-16-1 in my model_track1.py).
 
 ####3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+At first, I used the dataset provided in the project resources. The final step was to run the simulator to see how well the car was driving around track one. However, it appeared that although I was able to achieve high accuracy, the model falls off the track at places where the yellow lines dissapear. Then I had to collect more data, and add it to what was provided in the project resources.
 
 ![alt text][image2]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+This helped to avoid falling off the track, however, I encoutered another problem - after adding new data, the model stopped behaving well on the bridge, i.e. it bounced from one side to another many times, being unable to hit the road at the end of the bridge. The recovery data I have collected looked as following:
 
 ![alt text][image3]
 ![alt text][image4]
 ![alt text][image5]
 
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
+Then I had to collect even more data only on the bridge, and this finally solved all problems. The model I got is now capable of driving both directions on the track, as I used random flipping of images and angles. Flipping appeared to be very important, as without it the model was able to perform well only left turns, because track 1 mainly has left turns. The flipped images looked like this:
 
 ![alt text][image6]
 ![alt text][image7]
 
-Etc ....
+Exept the image flipping, I used data from left and right cameras, with the angle changed by +-0.25. From my experiments, 0.25 is a little bit better value than recommended 0.2, as it adds more penalty for hitting the edge of the road. I have also added random shadows on the left or right sides of the image, i.e. the part of the image was made darker, so that the network would learn to rely only on half of the image to determine the steering angle (lines 61-69 in model_track1.py)
 
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+You may check my succeful compliting track 1 at [linkname](https://youtu.be/a8uZswck93k)
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
