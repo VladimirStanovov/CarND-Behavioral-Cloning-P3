@@ -57,7 +57,7 @@ My model used for track 1 consists of a convolution neural network with 3x3 filt
 
 The model includes RELU layers to introduce nonlinearity (code line 224), and the data is normalized in the model using a Keras lambda layer (code line 221). After flattening, there were 3 fully connected layers (1536, 128 and 16 neurons).
 
-The model for track 2 is more compicated, as it contains 5 convolutional layers, with 3x3 filters, and 4 fully connected layers (1164, 100, 50, 10 neurons, this part is like in NVIDIA DAVE-2 architecture).
+The model for track 2 is more complicated, as it contains 5 convolutional layers, with 3x3 filters, and 4 fully connected layers (1164, 100, 50, 10 neurons, this part is like in NVIDIA DAVE-2 architecture).
 
 ####2. Attempts to reduce overfitting in the model
 
@@ -97,9 +97,9 @@ I ended up with 32-48-64-96 depth and a maxpooling after each layer. As for full
 
 ####3. Creation of the Training Set & Training Process
 
-At first, I used the dataset provided in the project resources. The final step was to run the simulator to see how well the car was driving around track one. However, it appeared that although I was able to achieve high accuracy, the model falls off the track at places where the yellow lines dissapear. Then I had to collect more data, and add it to what was provided in the project resources.
+At first, I used the dataset provided in the project resources. The final step was to run the simulator to see how well the car was driving around track one. However, it appeared that although I was able to achieve high accuracy, the model falls off the track at places where the yellow lines disappear. Then I had to collect more data, and add it to what was provided in the project resources.
 
-This helped to avoid falling off the track, however, I encoutered another problem - after adding new data, the model stopped behaving well on the bridge, i.e. it bounced from one side to another many times, being unable to hit the road at the end of the bridge. The recovery data I have collected looked as following:
+This helped to avoid falling off the track, however, I encountered another problem - after adding new data, the model stopped behaving well on the bridge, i.e. it bounced from one side to another many times, being unable to hit the road at the end of the bridge. The recovery data I have collected looked as following:
 
 ![alt text][image5]
 
@@ -115,18 +115,18 @@ Then I had to collect even more data only on the bridge, and this finally solved
 
 Exept the image flipping, I used data from left and right cameras, with the angle changed by +-0.25. From my experiments, 0.25 is a little bit better value than recommended 0.2, as it adds more penalty for hitting the edge of the road. I have also added random shadows on the left or right sides of the image, i.e. the part of the image was made darker, so that the network would learn to rely only on half of the image to determine the steering angle (lines 61-69 in model_track1.py)
 
-You may check my succeful compliting track 1 on youtube (image is clickable):
+You may check my successfull completing track 1 on youtube (image is clickable):
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/a8uZswck93k/0.jpg)](https://youtu.be/a8uZswck93k)
 
 ####4. Track 2
 
-Track 2 appeared to be much more challenging, first of all because I had to collect my own data. I made two runs around the track with low speed (5-7 mph) in both directions and as good driving as possible, which gave me around 24000 instances to train on. Simple application of the same model, as for track 1 did not do the job, the car fell off the road after a couple of turns, as soon as it encoutered a shadow on the road.
+Track 2 appeared to be much more challenging, first of all because I had to collect my own data. I made two runs around the track with low speed (5-7 mph) in both directions and as good driving as possible, which gave me around 24000 instances to train on. Simple application of the same model, as for track 1 did not do the job, the car fell off the road after a couple of turns, as soon as it encountered a shadow on the road.
 
-This fact made me change the data augmentaton procedure. I've searched through the net and found a couple of good examples of using opencv for brightness change, gamma correction, lightness adjustment, and, most importantly, adding random shadows. You may find the code in model_track2.py, in the main training data generator. The shadows are always added to the image, while other corrections like flipping are random, i.e. they were applied with 50% chance. This gave the model opportinuty to pass the shadowed turn, but it fell off the track at hard turns, as it was not capable of tracking them. Adding additional convolution layer and fully connected layer increased the model capabilities, and the training and validation erros were gradually reduced. 
+This fact made me change the data augmentation procedure. I've searched through the net and found a couple of good examples of using opencv for brightness change, gamma correction, lightness adjustment, and, most importantly, adding random shadows. You may find the code in model_track2.py, in the main training data generator. The shadows are always added to the image, while other corrections like flipping are random, i.e. they were applied with 50% chance. This gave the model opportunity to pass the shadowed turn, but it fell off the track at hard turns, as it was not capable of tracking them. Adding additional convolution layer and fully connected layer increased the model capabilities, and the training and validation erros were gradually reduced. 
 
 However, two really hard turns, left and then right, were still impossible to pass. So, I had to collect even more data, but this time this was only recovery data. I made several iterations, collecting images only from these hard turns, by 3000-6000 instances each time, but only when I have collected a total of 17000 additional recovery instances, I was able to finally pass through the track 2. However, the recovery data ruined the capability of the model to stay in the same lane, so my model sometimes switches it, but this is due to the fact that I didn't pay much attention to the dashed line in recovery data.
 
-You may check my succeful compliting track 2 on youtube (image is clickable):
+You may check my successfull completing track 2 on youtube (image is clickable):
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/nhPaGT6zm9o/0.jpg)](https://youtu.be/nhPaGT6zm9o)
 
 
