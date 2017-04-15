@@ -116,7 +116,7 @@ Then I had to collect even more data only on the bridge, and this finally solved
 
 Exept the image flipping, I used data from left and right cameras, with the angle changed by +-0.25. From my experiments, 0.25 is a little bit better value than recommended 0.2, as it adds more penalty for hitting the edge of the road. I have also added random shadows on the left or right sides of the image, i.e. the part of the image was made darker, so that the network would learn to rely only on half of the image to determine the steering angle (lines 61-69 in model_track1.py)
 
-You may check my succeful compliting track 1 at [linkname](https://youtu.be/a8uZswck93k)
+You may check my succeful compliting track 1 at [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/a8uZswck93k/0.jpg)](https://youtu.be/a8uZswck93k)
 
 
 
