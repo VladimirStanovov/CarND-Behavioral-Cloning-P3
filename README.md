@@ -126,6 +126,4 @@ However, two really hard turns, left and then right, were still impossible to pa
 You may check my succeful compliting track 2 on youtube (image is clickable):
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/nhPaGT6zm9o/0.jpg)](https://youtu.be/nhPaGT6zm9o)
 
-I have also included my jupyter notebook file where I tested data augmentation, you may check it out to see how it performs.
-
 
