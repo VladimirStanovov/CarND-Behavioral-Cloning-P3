@@ -2,10 +2,6 @@
 
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
-##Writeup Template
-
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
 **Behavioral Cloning Project**
@@ -28,47 +24,54 @@ The goals / steps of this project are the following:
 [image6]: ./examples/placeholder_small.png "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
 
-## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
-
 ---
 ###Files Submitted & Code Quality
 
 ####1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
-* model.py containing the script to create and train the model
+* model_track1.py containing the script I used to create model for track 1
+* model_track1.h5 containing a trained convolution neural network for track 1
+* model_track2.py containing the script I used to create model for track 2
+* model_track2.h5 containing a trained convolution neural network for track 2
 * drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* README.md summarizing the results
 
 ####2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
 ```sh
-python drive.py model.h5
+python drive.py model_track1.h5
+```
+ or
+ ```sh
+python drive.py model_track2.h5
 ```
 
 ####3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model.
 
 ###Model Architecture and Training Strategy
 
 ####1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+My model used for track 1 consists of a convolution neural network with 3x3 filter sizes and 4 layers of depths between 32 and 96 (model.py lines 223-230) with maxpooling between them.
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+The model includes RELU layers to introduce nonlinearity (code line 224), and the data is normalized in the model using a Keras lambda layer (code line 221). After flattening, there were 3 fully connected layers (1536, 128 and 16 neurons).
+
+The model for track 2 is more compicated, as it contains 5 convolutional layers, with 3x3 filters, and 4 fully connected layers (1164, 100, 50, 10 neurons, this part is like in NVIDIA DAVE-2 architecture).
 
 ####2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+The model does not contain any dropout layers, because introducing them did not deliver any significant improvement (according to my tests). 
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting using a generator (code line 240). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+
+From my point of view, the overfitting is not a big issue for this problem, because basically underfitting is what I have expirienced more (especially for track 2). However, overfitting may occur, if the model is trained too long, 400+ epochs.
 
 ####3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 239).
 
 ####4. Appropriate training data
 
